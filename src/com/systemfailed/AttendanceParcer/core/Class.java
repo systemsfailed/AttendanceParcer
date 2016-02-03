@@ -114,26 +114,20 @@ public class Class
 	 * @param inFile
 	 * Initial build file containing one student's name per line
 	 */
-	public void buildClassInitial(File inFile)
+	public void buildClassInitial(File inFile)throws Exception
 	{
 		Scanner reader;
 		numStudents = 0;
 		numUnknowns = 0;
-		try 
+		reader = new Scanner(inFile);
+		String line;
+		while(reader.hasNextLine())
 		{
-			reader = new Scanner(inFile);
-			String line;
-			while(reader.hasNextLine())
-			{
-				line = reader.nextLine();
-				Student s = new Student(line.replaceAll(" ", ""));
-				students.put(s.getName(), s);
-				numStudents++;
-			}
-		} catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}	
+			line = reader.nextLine();
+			Student s = new Student(line.replaceAll(" ", ""));
+			students.put(s.getName(), s);
+			numStudents++;
+		}
 	}
 	
 	/**
@@ -142,10 +136,8 @@ public class Class
 	 * A file generated from a previous running of this program. Contains students
 	 * names and running participation score.
 	 */
-	public void buildClassFromFile(File inFile)
+	public void buildClassFromFile(File inFile) throws Exception
 	{
-		try 
-		{
 			Scanner reader = new Scanner(inFile);
 			String tmp;//String to hold the line to check for "Unknowns"
 			reader.nextLine();//Skips the "Students" line
@@ -174,10 +166,6 @@ public class Class
 					numUnknowns++;
 				}
 			}
-		} catch (FileNotFoundException e) 
-		{
-			e.printStackTrace();
-		}
 		
 	}
 	

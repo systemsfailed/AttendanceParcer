@@ -25,7 +25,7 @@ public class InputParser
 	 * @param inFile
 	 * The log file of the Today'sMeet session in text format
 	 */
-	public static void Parse(Class group, File inFile)
+	public static void Parse(Class group, File inFile) throws Exception
 	{
 		HashMap<String, Student> inAttendance = new HashMap<String, Student>();
 		ArrayList<String> list = new ArrayList<String>();
