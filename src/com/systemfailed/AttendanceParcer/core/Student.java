@@ -30,6 +30,7 @@ public class Student
 	Student(String name)
 	{
 		this.name = name.toLowerCase();
+		participation  = 0;
 	}
 	
 	Student(String name, int participation)

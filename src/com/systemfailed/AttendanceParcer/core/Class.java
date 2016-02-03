@@ -1,6 +1,11 @@
 /**
  * @author Rob Massina
  * @email Rmassina@albany.edu/Systemsfailed@gmail.com
+ * The class object contains two HashMap maps for storing the participaion scores of students
+ * as well as names that don't appear in the class roster for manual sorting
+ * 
+ * Provides all of th emethods needed to create a roster and write the roster and partcipation points
+ * to an external file
  */
 package com.systemfailed.AttendanceParcer.core;
 
@@ -107,8 +112,7 @@ public class Class
 	 * student ID number
 	 * 
 	 * @param inFile
-	 * Initial build file containing one student per line with their name and ID seperated
-	 * by a whitespace
+	 * Initial build file containing one student's name per line
 	 */
 	public void buildClassInitial(File inFile)
 	{
@@ -122,7 +126,7 @@ public class Class
 			while(reader.hasNextLine())
 			{
 				line = reader.nextLine();
-				Student s = new Student(line);
+				Student s = new Student(line.replaceAll(" ", ""));
 				students.put(s.getName(), s);
 				numStudents++;
 			}
@@ -148,7 +152,7 @@ public class Class
 			numStudents = 0;
 			numUnknowns = 0;
 			
-			while(reader.hasNextLine())
+			while(reader.hasNext())
 			{
 				tmp = reader.next();
 				if(tmp.equals("Unknowns"))
@@ -159,15 +163,17 @@ public class Class
 				numStudents++;
 			}
 			
-			reader.nextLine();
-			
-			while(reader.hasNextLine())
+			if(reader.hasNextLine())
 			{
-				Student s = new Student(reader.next(), reader.nextInt());
-				unknowns.put(s.getName(), s);
-				numUnknowns++;
+				reader.nextLine();
+				
+				while(reader.hasNextLine())
+				{
+					Student s = new Student(reader.next(), reader.nextInt());
+					unknowns.put(s.getName(), s);
+					numUnknowns++;
+				}
 			}
-			
 		} catch (FileNotFoundException e) 
 		{
 			e.printStackTrace();
@@ -179,13 +185,13 @@ public class Class
 	 * Writes a file containing the name and participation scores of all
 	 * students currently in the database.
 	 */
-	public void writeFile()
+	public void writeFile(String fileName)
 	{
 		try 
 		{
 			Iterator it = students.entrySet().iterator();
 			
-			FileWriter writer = new FileWriter("Participation.txt");
+			FileWriter writer = new FileWriter(fileName);
 			writer.write("Students\n");
 			while(it.hasNext())
 			{
@@ -206,6 +212,7 @@ public class Class
 			
 		} catch (IOException e) 
 		{
+			System.out.printf("Error writing to file " + fileName + "\n");
 			e.printStackTrace();
 		}
 	}
